@@ -103,8 +103,8 @@ class Item(models.Model):
         return str(self.name)    
 
 class ContractDetail(models.Model):    
-    contract_id = models.ForeignKey(Contract, on_delete=models.CASCADE)
-    item_id = models.ForeignKey(Item, on_delete=models.CASCADE)
+    contract_id = models.ForeignKey(Contract, related_name='ctr_details', on_delete=models.CASCADE)
+    item_id = models.ForeignKey(Item, related_name='items', on_delete=models.CASCADE)
     qtty = models.DecimalField(max_digits=10,default=0,decimal_places=2)
     price = models.DecimalField(max_digits=10,default=0,decimal_places=2)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -118,4 +118,5 @@ class ContractDetail(models.Model):
         super(ContractDetail, self).save(*args, **kwargs)
 
     def __str__(self):
-        return str(self.id)    
+        return str(self.id) +""+ str(self.contract_id) +""+ str(self.item_id)
+        # ,self.qtty,self.price,self.user)    
