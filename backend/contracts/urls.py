@@ -5,7 +5,7 @@ from .views import (
     ContractViewSet,
     ContractDetailViewSet,
     CurrencyViewSet,
-    ExchangeRateViewSet, MeasuringUnitViewSet, ItemTypeViewSet, VATViewSet, ItemViewSet    
+    ExchangeRateViewSet, MeasuringUnitViewSet, ItemTypeViewSet, VATViewSet, ItemViewSet 
 )
 router = routers.DefaultRouter(trailing_slash=False)
 router.register('contracts', ContractViewSet, basename='contracts')
@@ -29,5 +29,5 @@ urlpatterns += [
     path('measuring-unit', MeasuringUnitViewSet),  
     path('item-type', ItemTypeViewSet),  
     path('vat', VATViewSet),
-    path('item', ItemViewSet),
+    path('item', ItemViewSet)
 ]

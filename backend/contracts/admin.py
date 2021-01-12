@@ -10,4 +10,3 @@ admin.site.register(ItemType)
 admin.site.register(VAT) 
 admin.site.register(Item) 
 
-

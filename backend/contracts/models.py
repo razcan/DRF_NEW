@@ -91,7 +91,8 @@ class VAT(models.Model):
     
 class Item(models.Model):
     name = models.CharField(max_length=256, verbose_name="name")
-    measuring_unit_id = models.ForeignKey(MeasuringUnit, on_delete=models.CASCADE)
+    measuring_unit_id = models.ForeignKey(MeasuringUnit, on_delete=models.CASCADE, related_name='measures')
+    # measuring_unit_id=models.OneToOneField(MeasuringUnit,primary_key=True)
     item_type_id = models.ForeignKey(ItemType, on_delete=models.CASCADE)
     vat_id = models.ForeignKey(VAT, on_delete=models.CASCADE)
     code = models.CharField(max_length=256, verbose_name="code")
@@ -100,10 +101,12 @@ class Item(models.Model):
     updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return str(self.name)    
+         return f'{self.name} {self.code} {self.measuring_unit_id}  {self.vat_id}' 
 
 class ContractDetail(models.Model):    
     contract_id = models.ForeignKey(Contract, related_name='ctr_details', on_delete=models.CASCADE)
+    # item_id = models.ForeignKey(Item, on_delete=models.CASCADE)
+    # item_id = models.OneToOneField(Item,on_delete=models.CASCADE)
     item_id = models.ForeignKey(Item, related_name='items', on_delete=models.CASCADE)
     qtty = models.DecimalField(max_digits=10,default=0,decimal_places=2)
     price = models.DecimalField(max_digits=10,default=0,decimal_places=2)
