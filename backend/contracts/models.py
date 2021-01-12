@@ -27,6 +27,28 @@ class ExchangeRate(models.Model):
     def __str__(self):
         return str(self.name)   
 
+class State(models.Model):
+    name = models.CharField(max_length=256, verbose_name="name")
+    code = models.CharField(max_length=256, verbose_name="code")
+
+    def __str__(self):
+        return str(self.name)   
+
+
+class Partner(models.Model):
+    name = models.CharField(max_length=256, verbose_name="name")
+    code = models.CharField(max_length=256, verbose_name="code")
+    fiscal_registration = models.CharField(max_length=256, verbose_name="fiscal_registration")
+    state_id = models.ForeignKey(State, on_delete=models.CASCADE)
+    type = models.CharField(max_length=256, verbose_name="code")
+    unique_id = models.IntegerField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateTimeField(auto_now=True)    
+
+    def __str__(self):
+        return str(self.name) 
+
 
 class Contract(models.Model):
     number = models.CharField(max_length=256, verbose_name="number")
@@ -35,7 +57,7 @@ class Contract(models.Model):
     end_date = models.DateField()
     approved_date = models.DateField()
     currency_id = models.ForeignKey(Currency, on_delete=models.CASCADE)
-    partner_id = models.IntegerField()
+    partner_id = models.ForeignKey(Partner, on_delete=models.CASCADE)
     partner_address_id = models.IntegerField()   
     notes = models.TextField(null=True)
     dimm_1 = models.IntegerField(blank=True, null=True)
@@ -79,7 +101,7 @@ class ItemType(models.Model):
         return str(self.name)   
 
 class VAT(models.Model):
-    name = models.CharField(max_length=256, verbose_name="nmae")
+    name = models.CharField(max_length=256, verbose_name="name")
     code = models.CharField(max_length=256, verbose_name="code")
     percent = models.IntegerField(verbose_name="percent")
     user = models.ForeignKey(User, on_delete=models.CASCADE)

@@ -13,9 +13,10 @@ from rest_framework.views import APIView
 
 
 from .serializers import (
-    ContractSerializer, CurrencySerializer , ExchangeRateSerializer, MeasuringUnitSerializer, ItemTypeSerializer, VATSerializer, ItemSerializer, ContractDetailSerializer
+    ContractSerializer, CurrencySerializer , ExchangeRateSerializer, MeasuringUnitSerializer, 
+    ItemTypeSerializer, VATSerializer, ItemSerializer, ContractDetailSerializer,PartnerSerializer,StateSerializer
 )
-from .models import Contract, Currency , ExchangeRate, MeasuringUnit, ItemType, VAT, Item, ContractDetail
+from .models import Contract, Currency , ExchangeRate, MeasuringUnit, ItemType, VAT, Item, ContractDetail,Partner,State
 
 class ContractViewSet(viewsets.ModelViewSet):
     #permission_classes = (IsAuthenticated,)  
@@ -74,3 +75,12 @@ class ItemViewSet(viewsets.ModelViewSet):
     serializer_class = ItemSerializer
     pagination_class = PageNumberPagination            
 
+class StateViewSet(viewsets.ModelViewSet):    
+    #permission_classes = (IsAuthenticated,)  
+    ordering_fields = ['id']
+    queryset = State.objects.all()
+
+class PartnerViewSet(viewsets.ModelViewSet):    
+    #permission_classes = (IsAuthenticated,)  
+    ordering_fields = ['id']
+    queryset = Partner.objects.all()    

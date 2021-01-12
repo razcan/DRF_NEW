@@ -20,7 +20,7 @@
                       <td>{{ item.start_date }}</td>
                       <td>{{ item.updated }}</td>
                       <td>{{ item.number }}</td>
-                      <td>{{ item.partner_id }}</td>
+                      <td>{{ item.partner_id.name }}</td>
                 </tr>               
               </tbody>
               </table>
@@ -67,6 +67,7 @@ export default {
         })
         .then(res => {
           this.list_contracts = res.data;
+          console.log(res.data);
           this.isLoading = false;
         })
         .catch(error => {

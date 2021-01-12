@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
-from .models import Contract, Currency , ExchangeRate, MeasuringUnit, ItemType, VAT, Item, ContractDetail
+from .models import Contract, Currency , ExchangeRate, MeasuringUnit, ItemType, VAT, Item, ContractDetail, Partner, State
 
 User = get_user_model()
 
@@ -15,6 +15,17 @@ class UserSerializer(serializers.ModelSerializer):
             'last_login',
             'auth_token'
         ]
+
+
+class PartnerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Partner
+        fields = '__all__'
+
+class StateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = State
+        fields = '__all__'
 
 class MeasuringUnitSerializer(serializers.ModelSerializer):
     class Meta:
@@ -44,13 +55,13 @@ class ItemSerializer(serializers.ModelSerializer):
 
 
 class ContractDetailSerializer(serializers.ModelSerializer):
-    items = ItemSerializer(many=True, read_only=True)
+    # items = ItemSerializer(many=True, read_only=True)
     #items = serializers.RelatedField(many=True)
     #items = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     # ctr_items = serializers.StringRelatedField(many=True, read_only=True)
     # ctr_items = serializers.HyperlinkedIdentityField(view_name='item')
     # ctr_items = ItemSerializer(many=True, read_only=True)
-    # item_id = ItemSerializer(many=True, read_only=True)    
+    item_id = ItemSerializer()    
     #items = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     class Meta:
         model = ContractDetail
@@ -61,6 +72,7 @@ class ContractDetailSerializer(serializers.ModelSerializer):
 class ContractSerializer(serializers.ModelSerializer):
     # ctr_details = serializers.StringRelatedField(many=True)
     #ctr_details = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    partner_id = PartnerSerializer()
     ctr_details = ContractDetailSerializer(many=True, read_only=True)
     class Meta:
         model = Contract
