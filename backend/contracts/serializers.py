@@ -72,6 +72,8 @@ class ContractDetailSerializer(serializers.ModelSerializer):
 class ContractSerializer(serializers.ModelSerializer):
     # ctr_details = serializers.StringRelatedField(many=True)
     #ctr_details = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
+    
+    get_contract_count = serializers.IntegerField(read_only=True)
     partner_id = PartnerSerializer()
     ctr_details = ContractDetailSerializer(many=True, read_only=True)
     class Meta:

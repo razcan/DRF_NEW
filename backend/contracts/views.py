@@ -6,10 +6,13 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework import permissions
 from rest_framework import filters
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import SAFE_METHODS, AllowAny, IsAuthenticated, IsAuthenticatedOrReadOnly, BasePermission, IsAdminUser, DjangoModelPermissions
 from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework import filters
+# from django_filters.rest_framework import DjangoFilterBackend
+
 
 
 from .serializers import (
@@ -21,7 +24,8 @@ from .models import Contract, Currency , ExchangeRate, MeasuringUnit, ItemType, 
 class ContractViewSet(viewsets.ModelViewSet):
     #permission_classes = (IsAuthenticated,)  
     ordering_fields = ['id']
-    queryset = Contract.objects.all()
+    # queryset = Contract.objects.all()
+    queryset = Contract.objects.raw("SELECT id FROM contracts_contract where id=2")
     serializer_class = ContractSerializer
     pagination_class = PageNumberPagination
 
@@ -70,10 +74,25 @@ class VATViewSet(viewsets.ModelViewSet):
 
 class ItemViewSet(viewsets.ModelViewSet):    
     #permission_classes = (IsAuthenticated,)  
-    ordering_fields = ['id']
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
-    pagination_class = PageNumberPagination            
+    pagination_class = PageNumberPagination
+
+    def get_queryset(self):
+        user = self.request.user
+        # tip = self.request.method
+        # print(tip);
+        # print(user);
+        queryset = Item.objects.all()
+        # url : http://127.0.0.1:8000/api/item?username=admin
+        username = self.request.query_params.get('username', None)
+        print(username);
+        if (username == 'admin'):
+            user_id = 1
+        else: 
+            user_id = 2
+        queryset = queryset.filter(user=user_id)
+        return queryset          
 
 class StateViewSet(viewsets.ModelViewSet):    
     #permission_classes = (IsAuthenticated,)  

@@ -80,6 +80,9 @@ class Contract(models.Model):
     def __str__(self):
         return f'{self.number} {self.start_date} {self.code}'
 
+    def get_contract_count(self):
+        return Contract.objects.count()
+
 class MeasuringUnit(models.Model):
     name = models.CharField(max_length=256, verbose_name="name")
     code = models.CharField(max_length=256, verbose_name="code")

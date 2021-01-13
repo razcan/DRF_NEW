@@ -19,6 +19,8 @@ from questions.serializers import (
     AnswerSerializer
 )
 from questions.models import Question, Answer
+from django.contrib.auth.models import User
+from rest_framework.authtoken.models import Token
 
 User = get_user_model()
 
@@ -47,6 +49,9 @@ class AuthViewSet(viewsets.GenericViewSet):
         user = create_user_account(**serializer.validated_data)
         data = serializers.UserRegisterSerializer(user).data
         data['last_login'] = datetime.datetime.now()
+        #generate automaticaly token for all users on app restart
+        for user in User.objects.all():
+            Token.objects.get_or_create(user=user)
         return Response(data=data, status=status.HTTP_201_CREATED)
 
     @action(methods=['POST'], detail=False)
